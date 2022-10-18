@@ -1,10 +1,10 @@
 package com.example.composetutorial
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,12 +22,18 @@ import com.example.composetutorial.ui.theme.ComposeTutorialTheme
 class MainActivity : ComponentActivity() {
 
     data class Message(val author: String, val message: String)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
 
-            MessageCard(Message("Android", "Jetpack Compose"))
-            
+            ComposeTutorialTheme {
+                Surface {
+                    MessageCard(Message("Android", "Jetpack Compose"))
+                }
+
+            }
+
             /*ComposeTutorialTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -49,7 +54,7 @@ fun MessageCard(msg: MainActivity.Message) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.profile_picture ),
+            painter = painterResource(id = R.drawable.profile_picture),
             contentDescription = "profile picture",
             modifier = Modifier
                 .size(40.dp)
@@ -57,19 +62,42 @@ fun MessageCard(msg: MainActivity.Message) {
         )
 
         Spacer(modifier = Modifier.width(8.dp))
-        
-        Column() {
-            Text(text = msg.author)
+
+        Column {
+            Text(
+                text = msg.author,
+                color = MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.h6
+            )
             Spacer(modifier = Modifier.height(5.dp))
-            Text(text = msg.message)
+
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                elevation = 10.dp
+            ) {
+                Text(
+                    text = msg.message,
+                    Modifier.padding(4.dp),
+                    style = MaterialTheme.typography.body1
+                )
+            }
         }
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Night mode"
+)
 @Composable
 fun PreviewMessageCard() {
-    MessageCard(MainActivity.Message("Android", "Jetpack Compose"))
+    ComposeTutorialTheme {
+        Surface {
+            MessageCard(MainActivity.Message("Android", "Jetpack Compose"))
+        }
+    }
 }
 
 @Composable
