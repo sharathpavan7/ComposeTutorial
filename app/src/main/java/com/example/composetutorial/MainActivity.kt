@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -29,7 +31,8 @@ class MainActivity : ComponentActivity() {
 
             ComposeTutorialTheme {
                 Surface {
-                    MessageCard(Message("Android", "Jetpack Compose"))
+//                    MessageCard(Message("Android", "Jetpack Compose"))
+                    Conversation(messages = SampleData.conversationSample)
                 }
 
             }
@@ -48,10 +51,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun Conversation(messages: List<MainActivity.Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            MessageCard(msg = message)
+        }
+    }
+}
+
+@Composable
 fun MessageCard(msg: MainActivity.Message) {
     Row(
-        modifier = Modifier.padding(all = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(all = 8.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.profile_picture),
@@ -95,7 +106,8 @@ fun MessageCard(msg: MainActivity.Message) {
 fun PreviewMessageCard() {
     ComposeTutorialTheme {
         Surface {
-            MessageCard(MainActivity.Message("Android", "Jetpack Compose"))
+//            MessageCard(MainActivity.Message("Android", "Jetpack Compose"))
+            Conversation(messages = SampleData.conversationSample)
         }
     }
 }
